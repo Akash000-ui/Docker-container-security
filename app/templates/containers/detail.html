@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ container.name }} - Container Security Monitor{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">Container details</p><h1>{{ container.name }}</h1><p>{{ container.id }}</p></div>
+  <span class="container-status status-{{ container.status }}">{{ container.status }}</span>
+</section>
+
+<section class="detail-grid">
+  <article class="content-card detail-card"><span class="metric-label">Image</span><strong>{{ container.image }}</strong><span class="metric-note">Created {{ container.created or 'unknown' }}</span></article>
+  <article class="content-card detail-card"><span class="metric-label">Network mode</span><strong>{{ container.network_mode or 'default' }}</strong><span class="metric-note">Networks: {{ container.networks|join(', ') or 'none' }}</span></article>
+  <article class="content-card detail-card"><span class="metric-label">Privilege</span><strong>{{ 'Privileged' if container.privileged else 'Standard' }}</strong><span class="metric-note">User: {{ container.user or 'image default' }}</span></article>
+</section>
+
+<section class="content-card detail-section">
+  <div class="section-heading"><div><p class="eyebrow">Configuration</p><h2>Ports and mounts</h2></div><span class="phase-label">Phase 4</span></div>
+  <div class="detail-columns">
+    <div><h3>Published ports</h3>{% if container.ports %}<ul class="detail-list">{% for port, bindings in container.ports.items() %}<li><strong>{{ port }}</strong> -&gt; {{ bindings or 'not published' }}</li>{% endfor %}</ul>{% else %}<p class="muted">No published ports.</p>{% endif %}</div>
+    <div><h3>Mounts</h3>{% if container.mounts %}<ul class="detail-list">{% for mount in container.mounts %}<li><strong>{{ mount.destination }}</strong><small>{{ mount.source }} - {{ 'read/write' if mount.rw else 'read-only' }}</small></li>{% endfor %}</ul>{% else %}<p class="muted">No mounts.</p>{% endif %}</div>
+  </div>
+</section>
+
+<section class="content-card detail-section"><p class="eyebrow">Runtime state</p><h2>Docker state</h2><pre class="code-block">{{ container.state|tojson(indent=2) }}</pre></section>
+{% endblock %}
+

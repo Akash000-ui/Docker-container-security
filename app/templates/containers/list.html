@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Containers - Container Security Monitor{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">Docker inventory</p><h1>All containers</h1><p>Current metadata from Docker Desktop's Linux engine.</p></div>
+  <a class="button" href="{{ url_for('containers.list_page') }}">Refresh</a>
+</section>
+
+{% if docker_error %}
+  <div class="flash flash-error">Docker Engine is unavailable. Start Docker Desktop and try again. {{ docker_error }}</div>
+{% elif containers %}
+  <section class="content-card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Image</th><th>Status</th><th>Ports</th><th>Networks</th><th></th></tr></thead>
+        <tbody>
+          {% for container in containers %}
+            <tr><td><strong>{{ container.name }}</strong><small>{{ container.short_id }}</small></td><td>{{ container.image }}</td><td><span class="container-status status-{{ container.status }}">{{ container.status }}</span></td><td>{{ container.ports|length }}</td><td>{{ container.networks|join(', ') or '-' }}</td><td><a class="text-link" href="{{ url_for('containers.detail_page', docker_id=container.id) }}">View -&gt;</a></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% else %}
+  <section class="content-card empty-state"><h2>No containers found</h2><p>Start a Docker container and refresh this page.</p></section>
+{% endif %}
+{% endblock %}
+

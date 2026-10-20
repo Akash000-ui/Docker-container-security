@@ -4,7 +4,7 @@ Academic B.Tech major project for monitoring Docker containers, detecting securi
 
 ## Current status
 
-Phase 3 is implemented:
+Phase 4 is implemented:
 
 - Flask application factory
 - Environment-based configuration
@@ -14,6 +14,11 @@ Phase 3 is implemented:
 - Hashed administrator passwords
 - Protected dashboard routes
 - CLI command for creating the first administrator
+- Docker SDK integration with Docker Desktop
+- Container inventory synchronization to SQLite
+- Container list and detail pages
+- Container inventory JSON APIs
+- Docker availability in the health endpoint
 - Dashboard placeholder
 - Health endpoint
 - User-friendly 404 and 500 pages
@@ -54,12 +59,11 @@ Check application and database health at <http://127.0.0.1:5000/health>.
 
 ## Planned implementation order
 
-1. Docker SDK integration
-2. Container monitoring
-3. Security configuration rules
-4. Risk scoring and alerts
-5. Trivy image scanning
-6. Charts and reports
+1. Container monitoring
+2. Security configuration rules
+3. Risk scoring and alerts
+4. Trivy image scanning
+5. Charts and reports
 
 The project design baseline is documented in [docs/phase-1-design.md](docs/phase-1-design.md).
 

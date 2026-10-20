@@ -14,7 +14,7 @@
       </a>
       <nav aria-label="Primary navigation">
         <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
-        <a href="#">Containers</a>
+        <a href="{{ url_for('containers.list_page') }}">Containers</a>
         <a href="#">Alerts</a>
         <a href="#">Reports</a>
         {% if current_user.is_authenticated %}

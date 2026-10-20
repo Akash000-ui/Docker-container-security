@@ -1,56 +1,47 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard · Container Security Monitor{% endblock %}
+{% block title %}Dashboard - Container Security Monitor{% endblock %}
 
 {% block content %}
 <section class="hero">
   <div>
     <p class="eyebrow">Security administrator console</p>
     <h1>Container security at a glance.</h1>
-    <p class="hero-copy">
-    You are signed in as the security administrator. Docker inventory, runtime
-    monitoring, security rules, and Trivy scanning will be added in the next phases.
-    </p>
+    <p class="hero-copy">You are signed in as the security administrator. This dashboard is now connected to the Docker Engine provided by Docker Desktop.</p>
   </div>
-  <div class="status-pill"><span class="status-dot"></span> Application online</div>
+  <div class="status-pill"><span class="status-dot"></span> {% if docker_error %}Docker unavailable{% else %}Docker connected{% endif %}</div>
 </section>
 
+{% if docker_error %}
+  <div class="flash flash-error">Docker Engine is unavailable. Start Docker Desktop and refresh. {{ docker_error }}</div>
+{% endif %}
+
 <section class="metric-grid" aria-label="System summary">
-  <article class="metric-card">
-    <span class="metric-label">Containers</span>
-    <strong>—</strong>
-    <span class="metric-note">Docker integration pending</span>
-  </article>
-  <article class="metric-card">
-    <span class="metric-label">Open alerts</span>
-    <strong>—</strong>
-    <span class="metric-note">Alert engine pending</span>
-  </article>
-  <article class="metric-card">
-    <span class="metric-label">Vulnerabilities</span>
-    <strong>—</strong>
-    <span class="metric-note">Trivy integration pending</span>
-  </article>
-  <article class="metric-card accent-card">
-    <span class="metric-label">Foundation</span>
-    <strong>Ready</strong>
-    <span class="metric-note">Authentication enabled</span>
-  </article>
+  <article class="metric-card"><span class="metric-label">Containers</span><strong>{{ total_containers }}</strong><span class="metric-note">{{ running_containers }} running - {{ stopped_containers }} stopped</span></article>
+  <article class="metric-card"><span class="metric-label">Open alerts</span><strong>-</strong><span class="metric-note">Alert engine pending</span></article>
+  <article class="metric-card"><span class="metric-label">Vulnerabilities</span><strong>-</strong><span class="metric-note">Trivy integration pending</span></article>
+  <article class="metric-card accent-card"><span class="metric-label">Docker Engine</span><strong>Connected</strong><span class="metric-note">Docker Desktop Linux engine</span></article>
 </section>
 
 <section class="content-card">
   <div class="section-heading">
-    <div>
-      <p class="eyebrow">Implementation roadmap</p>
-      <h2>Monitoring modules will appear here</h2>
+    <div><p class="eyebrow">Container inventory</p><h2>Recently discovered containers</h2></div>
+    <a class="phase-label" href="{{ url_for('containers.list_page') }}">View all</a>
+  </div>
+  {% if containers %}
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Image</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          {% for container in containers %}
+            <tr><td><strong>{{ container.name }}</strong><small>{{ container.short_id }}</small></td><td>{{ container.image }}</td><td><span class="container-status status-{{ container.status }}">{{ container.status }}</span></td><td><a class="text-link" href="{{ url_for('containers.detail_page', docker_id=container.id) }}">Details -&gt;</a></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-    <span class="phase-label">Phase 3</span>
-  </div>
-  <div class="roadmap-grid">
-    <div><span class="step-number">01</span><strong>Container inventory</strong><p>Discover Docker containers and images.</p></div>
-    <div><span class="step-number">02</span><strong>Security analysis</strong><p>Detect risky configuration and calculate scores.</p></div>
-    <div><span class="step-number">03</span><strong>Vulnerability scans</strong><p>Run Trivy and display CVE results.</p></div>
-  </div>
+  {% else %}
+    <div class="empty-inline"><p>No Docker containers were found.</p><a class="text-link" href="{{ url_for('containers.list_page') }}">Open inventory -&gt;</a></div>
+  {% endif %}
 </section>
 {% endblock %}
 
