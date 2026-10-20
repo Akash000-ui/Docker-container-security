@@ -136,6 +136,8 @@ class DockerService:
                     "cap_drop": host_config.get("CapDrop") or [],
                     "network_mode": host_config.get("NetworkMode") or "",
                     "pid_mode": host_config.get("PidMode") or "",
+                    "memory_limit": host_config.get("Memory", 0) or 0,
+                    "cpu_limit": host_config.get("NanoCpus", 0) or host_config.get("CpuQuota", 0) or 0,
                     "mounts": mounts,
                     "state": state,
                 }

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Security findings - Container Security Monitor{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">Security analysis</p><h1>{{ container.name }}</h1><p>Configuration findings detected by the rule engine.</p></div>
+  <div class="heading-actions"><span class="phase-label">Analysis {{ analysis_id[:8] }}</span><a class="button" href="{{ url_for('containers.security_page', docker_id=container.id) }}">Run again</a></div>
+</section>
+
+{% if findings %}
+  <section class="findings-grid">
+    {% for finding in findings %}
+      <article class="content-card finding-card finding-{{ finding.severity|lower }}">
+        <div class="finding-top"><span class="rule-code">{{ finding.rule_code }}</span><span class="severity-badge">{{ finding.severity }}</span></div>
+        <h2>{{ finding.rule_name }}</h2>
+        <p>{{ finding.description }}</p>
+        <div class="recommendation"><strong>Recommendation</strong><span>{{ finding.recommendation }}</span></div>
+      </article>
+    {% endfor %}
+  </section>
+{% else %}
+  <section class="content-card secure-state"><span class="secure-icon">✓</span><div><p class="eyebrow">No failed rules</p><h2>No configuration findings detected</h2><p>The container passed all current Phase 6 checks. Vulnerability scanning and risk scoring are added in later phases.</p></div></section>
+{% endif %}
+
+<section class="content-card analysis-note"><p class="eyebrow">Current rule set</p><p>Checks include root user, privileged mode, host namespaces, sensitive mounts, Docker socket mounts, dangerous capabilities, public ports, missing resource limits, and floating image tags.</p></section>
+{% endblock %}
+

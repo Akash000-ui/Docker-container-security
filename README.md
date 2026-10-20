@@ -23,6 +23,9 @@ Phase 5 is implemented:
 - Container process and recent log APIs
 - Runtime metrics stored in SQLite
 - Live runtime monitoring page with five-second refresh
+- Rule-based container security analysis
+- Timestamped security findings stored in SQLite
+- Security findings page and API
 - Dashboard placeholder
 - Health endpoint
 - User-friendly 404 and 500 pages
@@ -63,10 +66,9 @@ Check application and database health at <http://127.0.0.1:5000/health>.
 
 ## Planned implementation order
 
-1. Security configuration rules
-2. Risk scoring and alerts
-3. Trivy image scanning
-4. Charts and reports
+1. Risk scoring and alerts
+2. Trivy image scanning
+3. Charts and reports
 
 Runtime monitoring endpoints:
 
@@ -74,6 +76,7 @@ Runtime monitoring endpoints:
 GET /api/containers/<docker_id>/stats
 GET /api/containers/<docker_id>/logs?tail=200
 GET /api/containers/<docker_id>/processes
+GET /api/containers/<docker_id>/security
 ```
 
 The project design baseline is documented in [docs/phase-1-design.md](docs/phase-1-design.md).

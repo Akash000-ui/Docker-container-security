@@ -5,7 +5,7 @@
 {% block content %}
 <section class="page-heading">
   <div><p class="eyebrow">Container details</p><h1>{{ container.name }}</h1><p>{{ container.id }}</p></div>
-  <div class="heading-actions"><span class="container-status status-{{ container.status }}">{{ container.status }}</span><a class="button" href="{{ url_for('containers.monitor_page', docker_id=container.id) }}">Monitor runtime</a></div>
+  <div class="heading-actions"><span class="container-status status-{{ container.status }}">{{ container.status }}</span><a class="button" href="{{ url_for('containers.monitor_page', docker_id=container.id) }}">Monitor runtime</a><a class="phase-label" href="{{ url_for('containers.security_page', docker_id=container.id) }}">Analyze security</a></div>
 </section>
 
 <section class="detail-grid">

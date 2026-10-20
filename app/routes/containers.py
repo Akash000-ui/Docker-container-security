@@ -5,6 +5,7 @@ from flask_login import login_required
 
 from app.services.docker_service import DockerException, DockerService, NotFound
 from app.services.inventory_service import record_metric, sync_inventory
+from app.services.security_service import analyze_and_store
 
 
 containers_bp = Blueprint("containers", __name__)
@@ -57,6 +58,28 @@ def monitor_page(docker_id: str):
     return render_template("containers/monitor.html", container=container)
 
 
+@containers_bp.get("/containers/<docker_id>/security")
+@login_required
+def security_page(docker_id: str):
+    """Analyze a container and render its failed security checks."""
+
+    try:
+        container = _service().get_container(docker_id)
+        sync_inventory([container])
+        analysis_id, findings = analyze_and_store(docker_id, container)
+    except NotFound:
+        return render_template("errors/404.html"), 404
+    except (DockerException, ValueError) as error:
+        return render_template("errors/500.html", error=error), 503
+
+    return render_template(
+        "containers/security.html",
+        container=container,
+        findings=findings,
+        analysis_id=analysis_id,
+    )
+
+
 @containers_bp.get("/api/containers")
 @login_required
 def list_api():
@@ -81,6 +104,29 @@ def detail_api(docker_id: str):
         return jsonify({"error": "Container not found"}), 404
     except DockerException as error:
         return jsonify({"error": "Docker Engine is unavailable", "detail": str(error)}), 503
+
+
+@containers_bp.get("/api/containers/<docker_id>/security")
+@login_required
+def security_api(docker_id: str):
+    """Analyze a container and return its security findings as JSON."""
+
+    try:
+        container = _service().get_container(docker_id)
+        sync_inventory([container])
+        analysis_id, findings = analyze_and_store(docker_id, container)
+        return jsonify(
+            {
+                "container_id": docker_id,
+                "analysis_id": analysis_id,
+                "finding_count": len(findings),
+                "findings": findings,
+            }
+        )
+    except NotFound:
+        return jsonify({"error": "Container not found"}), 404
+    except (DockerException, ValueError) as error:
+        return jsonify({"error": "Security analysis unavailable", "detail": str(error)}), 503
 
 
 @containers_bp.get("/api/containers/<docker_id>/stats")
