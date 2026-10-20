@@ -17,10 +17,25 @@
         <a href="#">Containers</a>
         <a href="#">Alerts</a>
         <a href="#">Reports</a>
+        {% if current_user.is_authenticated %}
+          <span class="user-label">{{ current_user.username }}</span>
+          <form class="logout-form" method="post" action="{{ url_for('auth.logout') }}">
+            <button class="nav-button" type="submit">Log out</button>
+          </form>
+        {% endif %}
       </nav>
     </header>
 
     <main class="page-shell">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-stack" aria-live="polite">
+            {% for category, message in messages %}
+              <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
       {% block content %}{% endblock %}
     </main>
 

@@ -3,6 +3,7 @@
 from datetime import datetime, timezone
 
 from flask import Blueprint, jsonify, render_template
+from flask_login import login_required
 
 from app.extensions import db
 
@@ -11,6 +12,7 @@ main_bp = Blueprint("main", __name__)
 
 
 @main_bp.get("/")
+@login_required
 def index():
     """Show the initial dashboard during the foundation phase."""
 
@@ -18,6 +20,7 @@ def index():
 
 
 @main_bp.get("/dashboard")
+@login_required
 def dashboard():
     """Render the dashboard landing page."""
 

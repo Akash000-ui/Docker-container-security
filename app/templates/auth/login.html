@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Administrator login · Container Security Monitor{% endblock %}
+
+{% block content %}
+<section class="auth-shell">
+  <div class="auth-intro">
+    <p class="eyebrow">Protected workspace</p>
+    <h1>Sign in to monitor your containers.</h1>
+    <p>Use the administrator account created with the local Flask command line.</p>
+  </div>
+
+  <form class="auth-card" method="post" action="{{ url_for('auth.login') }}">
+    <div class="form-heading">
+      <span class="brand-mark">CS</span>
+      <div>
+        <strong>Administrator login</strong>
+        <span>Container Security Monitor</span>
+      </div>
+    </div>
+
+    <label for="username">Username</label>
+    <input id="username" name="username" type="text" autocomplete="username" required autofocus>
+
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required>
+
+    <button class="button auth-button" type="submit">Sign in</button>
+  </form>
+</section>
+{% endblock %}
+
