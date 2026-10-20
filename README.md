@@ -4,7 +4,7 @@ Academic B.Tech major project for monitoring Docker containers, detecting securi
 
 ## Current status
 
-Phase 4 is implemented:
+Phase 5 is implemented:
 
 - Flask application factory
 - Environment-based configuration
@@ -19,6 +19,10 @@ Phase 4 is implemented:
 - Container list and detail pages
 - Container inventory JSON APIs
 - Docker availability in the health endpoint
+- CPU, memory, network, and block I/O monitoring
+- Container process and recent log APIs
+- Runtime metrics stored in SQLite
+- Live runtime monitoring page with five-second refresh
 - Dashboard placeholder
 - Health endpoint
 - User-friendly 404 and 500 pages
@@ -59,11 +63,18 @@ Check application and database health at <http://127.0.0.1:5000/health>.
 
 ## Planned implementation order
 
-1. Container monitoring
-2. Security configuration rules
-3. Risk scoring and alerts
-4. Trivy image scanning
-5. Charts and reports
+1. Security configuration rules
+2. Risk scoring and alerts
+3. Trivy image scanning
+4. Charts and reports
+
+Runtime monitoring endpoints:
+
+```text
+GET /api/containers/<docker_id>/stats
+GET /api/containers/<docker_id>/logs?tail=200
+GET /api/containers/<docker_id>/processes
+```
 
 The project design baseline is documented in [docs/phase-1-design.md](docs/phase-1-design.md).
 

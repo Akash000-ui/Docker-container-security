@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Monitor {{ container.name }} - Container Security Monitor{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">Runtime monitor</p><h1>{{ container.name }}</h1><p>Live Docker statistics, processes, and recent logs.</p></div>
+  <div class="heading-actions"><span id="monitor-status" class="container-status status-running">Connecting</span><a class="phase-label" href="{{ url_for('containers.detail_page', docker_id=container.id) }}">Back to details</a></div>
+</section>
+
+<div id="monitor-error" class="flash flash-error hidden"></div>
+
+<section class="metric-grid monitor-metrics" aria-label="Runtime metrics">
+  <article class="metric-card"><span class="metric-label">CPU usage</span><strong id="cpu-value">-</strong><div class="meter"><span id="cpu-meter"></span></div><span class="metric-note">Updated <span id="updated-at">-</span></span></article>
+  <article class="metric-card"><span class="metric-label">Memory usage</span><strong id="memory-value">-</strong><div class="meter"><span id="memory-meter"></span></div><span id="memory-note" class="metric-note">-</span></article>
+  <article class="metric-card"><span class="metric-label">Network I/O</span><strong id="network-value">-</strong><span id="network-note" class="metric-note">-</span></article>
+  <article class="metric-card"><span class="metric-label">Block I/O</span><strong id="block-value">-</strong><span id="block-note" class="metric-note">-</span></article>
+</section>
+
+<section class="monitor-grid">
+  <article class="content-card monitor-panel"><div class="section-heading"><div><p class="eyebrow">Processes</p><h2>Running processes</h2></div></div><div id="processes-table" class="table-wrap"><p class="muted">Loading processes...</p></div></article>
+  <article class="content-card monitor-panel"><div class="section-heading"><div><p class="eyebrow">Logs</p><h2>Recent output</h2></div><button id="refresh-logs" class="phase-label button-reset" type="button">Refresh</button></div><pre id="logs-output" class="log-output">Loading logs...</pre></article>
+</section>
+
+<script>
+  window.containerMonitorId = {{ container.id|tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/monitor.js') }}"></script>
+{% endblock %}
+

@@ -25,3 +25,24 @@ class ContainerRecord(db.Model):
     def __repr__(self) -> str:
         return f"<ContainerRecord {self.name!r} {self.status!r}>"
 
+
+class ContainerMetric(db.Model):
+    """A point-in-time runtime resource snapshot."""
+
+    __tablename__ = "container_metrics"
+
+    id = db.Column(db.Integer, primary_key=True)
+    container_id = db.Column(db.Integer, db.ForeignKey("containers.id"), nullable=False, index=True)
+    cpu_percent = db.Column(db.Float, nullable=False, default=0)
+    memory_usage = db.Column(db.BigInteger, nullable=False, default=0)
+    memory_limit = db.Column(db.BigInteger, nullable=False, default=0)
+    memory_percent = db.Column(db.Float, nullable=False, default=0)
+    network_rx = db.Column(db.BigInteger, nullable=False, default=0)
+    network_tx = db.Column(db.BigInteger, nullable=False, default=0)
+    block_read = db.Column(db.BigInteger, nullable=False, default=0)
+    block_write = db.Column(db.BigInteger, nullable=False, default=0)
+    captured_at = db.Column(
+        db.DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )

@@ -1,10 +1,10 @@
 """Container inventory and detail routes."""
 
-from flask import Blueprint, jsonify, render_template
+from flask import Blueprint, jsonify, render_template, request
 from flask_login import login_required
 
 from app.services.docker_service import DockerException, DockerService, NotFound
-from app.services.inventory_service import sync_inventory
+from app.services.inventory_service import record_metric, sync_inventory
 
 
 containers_bp = Blueprint("containers", __name__)
@@ -42,6 +42,21 @@ def detail_page(docker_id: str):
     return render_template("containers/detail.html", container=container)
 
 
+@containers_bp.get("/containers/<docker_id>/monitor")
+@login_required
+def monitor_page(docker_id: str):
+    """Render live runtime monitoring for one container."""
+
+    try:
+        container = _service().get_container(docker_id)
+    except NotFound:
+        return render_template("errors/404.html"), 404
+    except DockerException as error:
+        return render_template("errors/500.html", error=error), 503
+
+    return render_template("containers/monitor.html", container=container)
+
+
 @containers_bp.get("/api/containers")
 @login_required
 def list_api():
@@ -66,4 +81,50 @@ def detail_api(docker_id: str):
         return jsonify({"error": "Container not found"}), 404
     except DockerException as error:
         return jsonify({"error": "Docker Engine is unavailable", "detail": str(error)}), 503
+
+
+@containers_bp.get("/api/containers/<docker_id>/stats")
+@login_required
+def stats_api(docker_id: str):
+    """Return one CPU, memory, network, and block I/O snapshot."""
+
+    try:
+        stats = _service().get_stats(docker_id)
+        record_metric(stats)
+        return jsonify(stats)
+    except NotFound:
+        return jsonify({"error": "Container not found"}), 404
+    except DockerException as error:
+        return jsonify({"error": "Container statistics unavailable", "detail": str(error)}), 503
+
+
+@containers_bp.get("/api/containers/<docker_id>/logs")
+@login_required
+def logs_api(docker_id: str):
+    """Return recent container logs."""
+
+    try:
+        tail = int(request.args.get("tail", 200))
+    except ValueError:
+        tail = 200
+
+    try:
+        return jsonify({"logs": _service().get_logs(docker_id, tail=tail), "tail": max(1, min(tail, 1000))})
+    except NotFound:
+        return jsonify({"error": "Container not found"}), 404
+    except DockerException as error:
+        return jsonify({"error": "Container logs unavailable", "detail": str(error)}), 503
+
+
+@containers_bp.get("/api/containers/<docker_id>/processes")
+@login_required
+def processes_api(docker_id: str):
+    """Return the process table reported by Docker."""
+
+    try:
+        return jsonify(_service().get_processes(docker_id))
+    except NotFound:
+        return jsonify({"error": "Container not found"}), 404
+    except DockerException as error:
+        return jsonify({"error": "Container processes unavailable", "detail": str(error)}), 503
 

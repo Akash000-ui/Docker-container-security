@@ -1,7 +1,7 @@
 """Database models."""
 
 from .user import User
-from .container import ContainerRecord
+from .container import ContainerMetric, ContainerRecord
 
-__all__ = ["User", "ContainerRecord"]
+__all__ = ["User", "ContainerMetric", "ContainerRecord"]
 
