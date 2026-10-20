@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Container Security Monitor{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="{{ url_for('main.dashboard') }}">
+        <span class="brand-mark">CS</span>
+        <span>Container Security Monitor</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+        <a href="#">Containers</a>
+        <a href="#">Alerts</a>
+        <a href="#">Reports</a>
+      </nav>
+    </header>
+
+    <main class="page-shell">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+      Academic B.Tech project · Phase 2 foundation
+    </footer>
+  </body>
+</html>
+

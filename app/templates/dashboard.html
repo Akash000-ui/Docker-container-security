@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard · Container Security Monitor{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">Security administrator console</p>
+    <h1>Container security at a glance.</h1>
+    <p class="hero-copy">
+      The application foundation is ready. Docker inventory, runtime monitoring,
+      security rules, and Trivy scanning will be added in the next phases.
+    </p>
+  </div>
+  <div class="status-pill"><span class="status-dot"></span> Application online</div>
+</section>
+
+<section class="metric-grid" aria-label="System summary">
+  <article class="metric-card">
+    <span class="metric-label">Containers</span>
+    <strong>—</strong>
+    <span class="metric-note">Docker integration pending</span>
+  </article>
+  <article class="metric-card">
+    <span class="metric-label">Open alerts</span>
+    <strong>—</strong>
+    <span class="metric-note">Alert engine pending</span>
+  </article>
+  <article class="metric-card">
+    <span class="metric-label">Vulnerabilities</span>
+    <strong>—</strong>
+    <span class="metric-note">Trivy integration pending</span>
+  </article>
+  <article class="metric-card accent-card">
+    <span class="metric-label">Foundation</span>
+    <strong>Ready</strong>
+    <span class="metric-note">Flask + SQLite connected</span>
+  </article>
+</section>
+
+<section class="content-card">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Implementation roadmap</p>
+      <h2>Monitoring modules will appear here</h2>
+    </div>
+    <span class="phase-label">Phase 2</span>
+  </div>
+  <div class="roadmap-grid">
+    <div><span class="step-number">01</span><strong>Container inventory</strong><p>Discover Docker containers and images.</p></div>
+    <div><span class="step-number">02</span><strong>Security analysis</strong><p>Detect risky configuration and calculate scores.</p></div>
+    <div><span class="step-number">03</span><strong>Vulnerability scans</strong><p>Run Trivy and display CVE results.</p></div>
+  </div>
+</section>
+{% endblock %}
+
