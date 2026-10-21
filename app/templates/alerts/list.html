@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Alerts - Container Security Monitor{% endblock %}
+
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Security operations</p><h1>Alerts</h1><p>Review configuration risks and mark completed work as resolved.</p></div></section>
+
+{% if alerts %}
+  <section class="content-card">
+    <div class="table-wrap"><table><thead><tr><th>Severity</th><th>Alert</th><th>Container</th><th>Status</th><th>Created</th><th></th></tr></thead><tbody>
+      {% for alert in alerts %}
+        <tr><td><span class="severity-badge alert-severity-{{ alert.severity|lower }}">{{ alert.severity }}</span></td><td><strong>{{ alert.alert_type }}</strong><small>{{ alert.message }}</small></td><td>{{ alert.container.name if alert.container else 'Unknown' }}</td><td><span class="alert-status alert-{{ alert.status|lower }}">{{ alert.status }}</span></td><td>{{ alert.created_at.strftime('%Y-%m-%d %H:%M') }}</td><td>{% if alert.status == 'OPEN' %}<form method="post" action="{{ url_for('alerts.resolve', alert_id=alert.id) }}"><button class="phase-label button-reset" type="submit">Resolve</button></form>{% else %}<span class="muted">Completed</span>{% endif %}</td></tr>
+      {% endfor %}
+    </tbody></table></div>
+  </section>
+{% else %}
+  <section class="content-card empty-state"><h2>No alerts yet</h2><p>Run a security analysis on a container to generate alerts.</p></section>
+{% endif %}
+{% endblock %}
+

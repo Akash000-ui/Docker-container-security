@@ -26,6 +26,9 @@ Phase 5 is implemented:
 - Rule-based container security analysis
 - Timestamped security findings stored in SQLite
 - Security findings page and API
+- Security score and risk category calculation
+- Persistent open/resolved alerts with deduplication
+- Alert dashboard and resolve action
 - Dashboard placeholder
 - Health endpoint
 - User-friendly 404 and 500 pages
@@ -66,9 +69,8 @@ Check application and database health at <http://127.0.0.1:5000/health>.
 
 ## Planned implementation order
 
-1. Risk scoring and alerts
-2. Trivy image scanning
-3. Charts and reports
+1. Trivy image scanning
+2. Charts and reports
 
 Runtime monitoring endpoints:
 
@@ -77,6 +79,8 @@ GET /api/containers/<docker_id>/stats
 GET /api/containers/<docker_id>/logs?tail=200
 GET /api/containers/<docker_id>/processes
 GET /api/containers/<docker_id>/security
+GET /api/alerts
+POST /alerts/<alert_id>/resolve
 ```
 
 The project design baseline is documented in [docs/phase-1-design.md](docs/phase-1-design.md).

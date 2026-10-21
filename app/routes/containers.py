@@ -5,7 +5,7 @@ from flask_login import login_required
 
 from app.services.docker_service import DockerException, DockerService, NotFound
 from app.services.inventory_service import record_metric, sync_inventory
-from app.services.security_service import analyze_and_store
+from app.services.security_service import run_security_analysis
 
 
 containers_bp = Blueprint("containers", __name__)
@@ -66,7 +66,7 @@ def security_page(docker_id: str):
     try:
         container = _service().get_container(docker_id)
         sync_inventory([container])
-        analysis_id, findings = analyze_and_store(docker_id, container)
+        analysis = run_security_analysis(docker_id, container)
     except NotFound:
         return render_template("errors/404.html"), 404
     except (DockerException, ValueError) as error:
@@ -75,8 +75,8 @@ def security_page(docker_id: str):
     return render_template(
         "containers/security.html",
         container=container,
-        findings=findings,
-        analysis_id=analysis_id,
+        findings=analysis["findings"],
+        analysis=analysis,
     )
 
 
@@ -114,13 +114,12 @@ def security_api(docker_id: str):
     try:
         container = _service().get_container(docker_id)
         sync_inventory([container])
-        analysis_id, findings = analyze_and_store(docker_id, container)
+        analysis = run_security_analysis(docker_id, container)
         return jsonify(
             {
                 "container_id": docker_id,
-                "analysis_id": analysis_id,
-                "finding_count": len(findings),
-                "findings": findings,
+                "finding_count": len(analysis["findings"]),
+                **analysis,
             }
         )
     except NotFound:
