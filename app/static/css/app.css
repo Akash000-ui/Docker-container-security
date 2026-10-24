@@ -111,6 +111,22 @@ td small { color: var(--muted); font-size: 0.72rem; margin-top: 0.3rem; }
 .secure-state h2 { margin: 0 0 0.5rem; }
 .secure-state p:last-child, .analysis-note p:last-child { color: var(--muted); line-height: 1.6; margin-bottom: 0; }
 .analysis-note { color: var(--muted); }
+.scan-form-card { align-items: end; display: grid; gap: 2rem; grid-template-columns: 1fr 1.2fr; }
+.scan-form { align-items: end; display: grid; gap: 0.6rem; grid-template-columns: 1fr auto; }
+.scan-form label { color: var(--muted); font-size: 0.8rem; grid-column: 1 / -1; }
+.scan-form input { background: #0e1621; border: 1px solid var(--border); border-radius: 0.5rem; color: var(--text); font: inherit; padding: 0.75rem; }
+.scan-form input:focus { border-color: var(--accent); outline: 2px solid var(--accent-soft); }
+.image-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+.image-chip { background: var(--surface-soft); border: 1px solid var(--border); border-radius: 999px; color: #d9e3ef; font-size: 0.8rem; padding: 0.5rem 0.75rem; }
+.image-chip:hover { border-color: var(--accent); color: var(--accent); }
+.scan-history { display: grid; gap: 0.7rem; margin-top: 1.5rem; }
+.scan-item { background: var(--surface-soft); border: 1px solid var(--border); border-radius: 0.7rem; padding: 1rem; }
+.scan-item summary { align-items: center; cursor: pointer; display: flex; justify-content: space-between; list-style: none; }
+.scan-item summary::-webkit-details-marker { display: none; }
+.scan-item summary strong, .scan-item summary small { display: block; }.scan-item summary small { color: var(--muted); font-size: 0.72rem; margin-top: 0.3rem; }
+.scan-summary { align-items: center; color: var(--muted); display: flex; gap: 0.8rem; font-size: 0.8rem; }
+.scan-completed { color: var(--accent); }.scan-failed { color: #ff8f8f; }.scan-running { color: var(--warning); }
+.scan-error { color: #ffb4b4; margin: 1rem 0 0; }.compact { margin: 1.5rem 0; }
 .score-layout { display: grid; gap: 1rem; grid-template-columns: 0.8fr 1.2fr; }
 .score-card, .severity-card { margin-top: 0; }
 .score-value { font-size: 4.2rem; font-weight: 800; letter-spacing: -0.08em; line-height: 1; margin: 1rem 0 0.5rem; }
@@ -174,6 +190,9 @@ td small { color: var(--muted); font-size: 0.72rem; margin-top: 0.3rem; }
   .detail-grid, .detail-columns { grid-template-columns: 1fr; }
   .findings-grid { grid-template-columns: 1fr; }
   .score-layout { grid-template-columns: 1fr; }
+  .scan-form-card { align-items: stretch; grid-template-columns: 1fr; }
+  .scan-form { grid-template-columns: 1fr; }
+  .scan-form .button { width: 100%; }
   .heading-actions, .monitor-grid { align-items: flex-start; flex-direction: column; grid-template-columns: 1fr; }
   nav { flex-wrap: wrap; }
   .metric-grid, .roadmap-grid { grid-template-columns: 1fr 1fr; }

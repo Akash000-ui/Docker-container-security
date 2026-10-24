@@ -16,7 +16,7 @@
         <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
         <a href="{{ url_for('containers.list_page') }}">Containers</a>
         <a href="{{ url_for('alerts.list_page') }}">Alerts</a>
-        <a href="#">Reports</a>
+        <a href="{{ url_for('vulnerabilities.list_page') }}">Vulnerabilities</a>
         {% if current_user.is_authenticated %}
           <span class="user-label">{{ current_user.username }}</span>
           <form class="logout-form" method="post" action="{{ url_for('auth.logout') }}">

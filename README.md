@@ -4,7 +4,7 @@ Academic B.Tech major project for monitoring Docker containers, detecting securi
 
 ## Current status
 
-Phase 5 is implemented:
+Phase 8 is implemented:
 
 - Flask application factory
 - Environment-based configuration
@@ -29,6 +29,10 @@ Phase 5 is implemented:
 - Security score and risk category calculation
 - Persistent open/resolved alerts with deduplication
 - Alert dashboard and resolve action
+- Trivy image vulnerability scanning
+- CVE/package/severity result storage
+- Vulnerability scan history and dashboard
+- Vulnerability scan and result APIs
 - Dashboard placeholder
 - Health endpoint
 - User-friendly 404 and 500 pages
@@ -69,8 +73,7 @@ Check application and database health at <http://127.0.0.1:5000/health>.
 
 ## Planned implementation order
 
-1. Trivy image scanning
-2. Charts and reports
+1. Charts and reports
 
 Runtime monitoring endpoints:
 
@@ -81,6 +84,10 @@ GET /api/containers/<docker_id>/processes
 GET /api/containers/<docker_id>/security
 GET /api/alerts
 POST /alerts/<alert_id>/resolve
+POST /vulnerabilities/scan
+POST /api/images/<image_name>/scan
+GET /api/scans/<scan_id>
+GET /api/vulnerabilities?severity=CRITICAL
 ```
 
 The project design baseline is documented in [docs/phase-1-design.md](docs/phase-1-design.md).

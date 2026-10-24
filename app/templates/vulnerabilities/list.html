@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Vulnerabilities - Container Security Monitor{% endblock %}
+
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Trivy scanner</p><h1>Image vulnerabilities</h1><p>Scan local Docker images and review known CVEs by severity.</p></div></section>
+
+<section class="content-card scan-form-card">
+  <div><p class="eyebrow">Start a scan</p><h2>Scan Docker image</h2><p class="muted">Trivy downloads or updates its vulnerability database during the first scan.</p></div>
+  <form class="scan-form" method="post" action="{{ url_for('vulnerabilities.scan_form') }}"><label for="image_name">Image name</label><input id="image_name" name="image_name" list="local-images" value="{{ prefill_image }}" placeholder="nginx:latest" required><datalist id="local-images">{% for image in images %}<option value="{{ image.name }}">{% endfor %}</datalist><button class="button" type="submit">Scan image</button></form>
+</section>
+
+{% if docker_error %}<div class="flash flash-error">Docker images are unavailable. Start Docker Desktop and refresh. {{ docker_error }}</div>{% endif %}
+
+<section class="content-card"><div class="section-heading"><div><p class="eyebrow">Local images</p><h2>Available images</h2></div><a class="phase-label" href="{{ url_for('vulnerabilities.list_page') }}">Refresh</a></div>{% if images %}<div class="image-chips">{% for image in images %}<a class="image-chip" href="{{ url_for('vulnerabilities.list_page', image=image.name) }}">{{ image.name }}</a>{% endfor %}</div>{% else %}<p class="muted">No local images found.</p>{% endif %}</section>
+
+<section class="content-card"><div class="section-heading"><div><p class="eyebrow">Scan history</p><h2>Recent scans</h2></div></div>{% if scans %}<div class="scan-history">{% for scan in scans %}<details class="scan-item" {% if loop.first %}open{% endif %}><summary><span><strong>{{ scan.image_name }}</strong><small>{{ scan.scanned_at.strftime('%Y-%m-%d %H:%M') if scan.scanned_at else 'In progress' }}</small></span><span class="scan-summary"><b class="scan-{{ scan.scan_status|lower }}">{{ scan.scan_status }}</b><span>{{ scan.total_vulnerabilities }} findings</span></span></summary>{% if scan.scan_status == 'FAILED' %}<p class="scan-error">{{ scan.error_message }}</p>{% elif scan.vulnerabilities %}<div class="severity-summary compact">{% for severity, count in {'CRITICAL': 0, 'HIGH': 0, 'MEDIUM': 0, 'LOW': 0, 'UNKNOWN': 0}.items() %}{% set count = scan.vulnerabilities|selectattr('severity', 'equalto', severity)|list|length %}<div><span class="severity-dot dot-{{ severity|lower }}"></span><strong>{{ count }}</strong><small>{{ severity }}</small></div>{% endfor %}</div><div class="table-wrap"><table><thead><tr><th>CVE</th><th>Package</th><th>Severity</th><th>Installed</th><th>Fixed</th></tr></thead><tbody>{% for vulnerability in scan.vulnerabilities %}<tr><td><strong>{{ vulnerability.cve_id or 'Unknown' }}</strong><small>{{ vulnerability.title or '' }}</small></td><td>{{ vulnerability.package_name or '-' }}</td><td><span class="severity-badge alert-severity-{{ vulnerability.severity|lower }}">{{ vulnerability.severity }}</span></td><td>{{ vulnerability.installed_version or '-' }}</td><td>{{ vulnerability.fixed_version or 'Not available' }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="muted">No vulnerabilities were found for this scan.</p>{% endif %}</details>{% endfor %}</div>{% else %}<div class="empty-state"><h2>No scans yet</h2><p>Choose a local image or enter an image name above to begin.</p></div>{% endif %}</section>
+{% endblock %}
+

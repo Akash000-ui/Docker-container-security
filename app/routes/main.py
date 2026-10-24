@@ -6,7 +6,7 @@ from flask import Blueprint, jsonify, render_template
 from flask_login import login_required
 
 from app.extensions import db
-from app.models import Alert
+from app.models import Alert, Vulnerability
 from app.services.docker_service import DockerException, DockerService
 from app.services.inventory_service import sync_inventory
 
@@ -43,6 +43,7 @@ def dashboard():
         running_containers=running,
         stopped_containers=len(containers) - running,
         open_alerts=Alert.query.filter_by(status="OPEN").count(),
+        vulnerability_count=Vulnerability.query.count(),
         docker_error=docker_error,
     )
 

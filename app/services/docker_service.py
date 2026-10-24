@@ -23,6 +23,22 @@ class DockerService:
 
         return [self._serialize(container) for container in self.client.containers.list(all=True)]
 
+    def list_images(self) -> list[dict[str, Any]]:
+        """Return locally available images and their tags."""
+
+        images = []
+        for image in self.client.images.list():
+            tags = image.tags or [image.short_id]
+            for tag in tags:
+                images.append(
+                    {
+                        "name": tag,
+                        "id": image.short_id,
+                        "size": image.attrs.get("Size", 0),
+                    }
+                )
+        return images
+
     def get_container(self, docker_id: str) -> dict[str, Any]:
         """Return detailed metadata for one container."""
 
