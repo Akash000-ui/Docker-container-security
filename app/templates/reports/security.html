@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Security Report - Container Security Monitor{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">Phase 9 report</p><h1>Security report</h1><p>Current findings and scan activity across the Docker environment.</p></div>
+  <div class="heading-actions"><a class="button" href="{{ url_for('reports.security_report_csv_download') }}">Download CSV</a></div>
+</section>
+
+<section class="metric-grid" aria-label="Report summary">
+  <article class="metric-card"><span class="metric-label">Containers</span><strong>{{ report.summary.containers }}</strong><span class="metric-note">{{ report.summary.running_containers }} running</span></article>
+  <article class="metric-card"><span class="metric-label">Open alerts</span><strong>{{ report.summary.open_alerts }}</strong><span class="metric-note">{{ report.summary.resolved_alerts }} resolved</span></article>
+  <article class="metric-card"><span class="metric-label">Failed checks</span><strong>{{ report.summary.failed_checks }}</strong><span class="metric-note">Configuration findings</span></article>
+  <article class="metric-card"><span class="metric-label">Library findings</span><strong>{{ report.summary.vulnerabilities }}</strong><span class="metric-note">Across {{ report.summary.scans }} scans</span></article>
+</section>
+
+<section class="content-card">
+  <div class="section-heading"><div><p class="eyebrow">Generated</p><h2>{{ report.generated_at.strftime('%Y-%m-%d %H:%M UTC') }}</h2></div></div>
+</section>
+
+<section class="content-card">
+  <div class="section-heading"><div><p class="eyebrow">Configuration findings</p><h2>Failed checks</h2></div></div>
+  {% if report.checks %}
+  <div class="table-wrap"><table><thead><tr><th>Rule</th><th>Container ID</th><th>Severity</th><th>Description</th><th>Recommendation</th></tr></thead><tbody>
+    {% for check in report.checks %}<tr><td><strong>{{ check.rule_code }}</strong><small>{{ check.rule_name }}</small></td><td>{{ check.container_id }}</td><td>{{ check.severity }}</td><td>{{ check.description }}</td><td>{{ check.recommendation }}</td></tr>{% endfor %}
+  </tbody></table></div>
+  {% else %}<p class="muted">No failed configuration checks have been stored.</p>{% endif %}
+</section>
+
+<section class="content-card">
+  <div class="section-heading"><div><p class="eyebrow">Vulnerability findings</p><h2>Application-library vulnerabilities</h2></div></div>
+  {% if report.vulnerabilities %}
+  <div class="table-wrap"><table><thead><tr><th>Image</th><th>CVE</th><th>Package</th><th>Severity</th><th>Fixed version</th></tr></thead><tbody>
+    {% for vulnerability in report.vulnerabilities %}<tr><td>{{ vulnerability.image_scan.image_name }}</td><td><strong>{{ vulnerability.cve_id or 'Unknown' }}</strong><small>{{ vulnerability.title or '' }}</small></td><td>{{ vulnerability.package_name or '-' }}</td><td>{{ vulnerability.severity }}</td><td>{{ vulnerability.fixed_version or 'Not available' }}</td></tr>{% endfor %}
+  </tbody></table></div>
+  {% else %}<p class="muted">No application-library vulnerabilities have been stored.</p>{% endif %}
+</section>
+{% endblock %}

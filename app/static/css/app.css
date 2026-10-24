@@ -58,6 +58,9 @@ h2 { font-size: 1.4rem; letter-spacing: -0.03em; margin: 0; }
 .accent-card { background: linear-gradient(135deg, var(--accent-soft), rgba(20, 28, 40, 0.86)); }
 
 .content-card { margin-top: 1rem; padding: 1.5rem; }
+.chart-grid { display: grid; gap: 1rem; grid-template-columns: repeat(3, 1fr); margin-top: 1rem; }
+.chart-card { min-height: 320px; }
+.chart-card canvas { margin-top: 1.5rem; max-height: 220px; }
 .section-heading { align-items: flex-start; display: flex; justify-content: space-between; }
 .page-heading { align-items: flex-end; display: flex; justify-content: space-between; margin-bottom: 2rem; }
 .page-heading h1 { font-size: clamp(2.2rem, 5vw, 4rem); }
@@ -196,6 +199,7 @@ td small { color: var(--muted); font-size: 0.72rem; margin-top: 0.3rem; }
   .heading-actions, .monitor-grid { align-items: flex-start; flex-direction: column; grid-template-columns: 1fr; }
   nav { flex-wrap: wrap; }
   .metric-grid, .roadmap-grid { grid-template-columns: 1fr 1fr; }
+  .chart-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 520px) {

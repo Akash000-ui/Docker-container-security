@@ -17,6 +17,7 @@
         <a href="{{ url_for('containers.list_page') }}">Containers</a>
         <a href="{{ url_for('alerts.list_page') }}">Alerts</a>
         <a href="{{ url_for('vulnerabilities.list_page') }}">Vulnerabilities</a>
+        <a href="{{ url_for('reports.security_report') }}">Reports</a>
         {% if current_user.is_authenticated %}
           <span class="user-label">{{ current_user.username }}</span>
           <form class="logout-form" method="post" action="{{ url_for('auth.logout') }}">
@@ -40,7 +41,7 @@
     </main>
 
     <footer class="footer">
-      Academic B.Tech project · Phase 2 foundation
+      Academic B.Tech project · Phase 9 charts and reports
     </footer>
   </body>
 </html>

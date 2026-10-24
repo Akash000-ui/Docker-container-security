@@ -34,6 +34,7 @@ def create_app(test_config: dict | None = None) -> Flask:
     from .routes.alerts import alerts_bp
     from .routes.containers import containers_bp
     from .routes.main import main_bp
+    from .routes.reports import reports_bp
     from .routes.vulnerabilities import vulnerabilities_bp
 
     @login_manager.user_loader
@@ -41,6 +42,7 @@ def create_app(test_config: dict | None = None) -> Flask:
         return db.session.get(User, int(user_id))
 
     app.register_blueprint(main_bp)
+    app.register_blueprint(reports_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(alerts_bp)
     app.register_blueprint(containers_bp)

@@ -4,7 +4,7 @@ Academic B.Tech major project for monitoring Docker containers, detecting securi
 
 ## Current status
 
-Phase 8 is implemented:
+Phase 9 is implemented:
 
 - Flask application factory
 - Environment-based configuration
@@ -33,6 +33,9 @@ Phase 8 is implemented:
 - CVE/package/severity result storage
 - Vulnerability scan history and dashboard
 - Vulnerability scan and result APIs
+- Dashboard charts for container status, alerts, and library vulnerabilities
+- Security report preview and CSV export
+- Dashboard summary API for chart data
 - Dashboard placeholder
 - Health endpoint
 - User-friendly 404 and 500 pages
@@ -71,9 +74,13 @@ The command asks for a username and password without printing the password.
 
 Check application and database health at <http://127.0.0.1:5000/health>.
 
-## Planned implementation order
+## Phase 9 endpoints
 
-1. Charts and reports
+```text
+GET /api/dashboard/summary
+GET /reports/security
+GET /reports/security.csv
+```
 
 Runtime monitoring endpoints:
 

@@ -43,5 +43,14 @@
     <div class="empty-inline"><p>No Docker containers were found.</p><a class="text-link" href="{{ url_for('containers.list_page') }}">Open inventory -&gt;</a></div>
   {% endif %}
 </section>
+
+<section class="chart-grid" aria-label="Security charts">
+  <article class="content-card chart-card"><div class="section-heading"><div><p class="eyebrow">Inventory</p><h2>Container status</h2></div></div><canvas id="container-status-chart"></canvas><p class="chart-empty muted"></p></article>
+  <article class="content-card chart-card"><div class="section-heading"><div><p class="eyebrow">Alerts</p><h2>Open alert severity</h2></div></div><canvas id="alert-severity-chart"></canvas><p class="chart-empty muted"></p></article>
+  <article class="content-card chart-card"><div class="section-heading"><div><p class="eyebrow">Trivy</p><h2>Library vulnerability severity</h2></div></div><canvas id="vulnerability-severity-chart"></canvas><p class="chart-empty muted"></p></article>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 {% endblock %}
 
