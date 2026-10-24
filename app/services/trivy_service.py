@@ -42,7 +42,18 @@ class TrivyService:
 
         try:
             result = subprocess.run(
-                [self.binary, "image", "--format", "json", "--scanners", "vuln", "--no-progress", image_name],
+                [
+                    self.binary,
+                    "image",
+                    "--format",
+                    "json",
+                    "--scanners",
+                    "vuln",
+                    "--pkg-types",
+                    "library",
+                    "--no-progress",
+                    image_name,
+                ],
                 capture_output=True,
                 text=True,
                 encoding="utf-8",

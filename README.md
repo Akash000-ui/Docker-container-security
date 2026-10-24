@@ -29,7 +29,7 @@ Phase 8 is implemented:
 - Security score and risk category calculation
 - Persistent open/resolved alerts with deduplication
 - Alert dashboard and resolve action
-- Trivy image vulnerability scanning
+- Trivy image vulnerability scanning for application/library packages
 - CVE/package/severity result storage
 - Vulnerability scan history and dashboard
 - Vulnerability scan and result APIs
