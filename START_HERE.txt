@@ -27,7 +27,32 @@ To install Trivy with PowerShell, run:
 Close and reopen PowerShell after installing Trivy.
 
 
-2. EXTRACT THE PROJECT
+2. CREATE SAMPLE DOCKER DATA
+
+New Docker installations do not contain images or containers. With Docker Desktop running, execute:
+
+    docker pull nginx:latest
+    docker pull hello-world:latest
+    docker run -d --name demo-nginx -p 8081:80 nginx:latest
+    docker run --name demo-hello hello-world:latest
+
+The application will now be able to show:
+
+- demo-nginx as a running container
+- demo-hello as a stopped container
+- nginx:latest and hello-world:latest as local images
+
+You can open the sample web server at:
+
+    http://localhost:8081
+
+These containers are only for demonstration. To remove them later, run:
+
+    docker rm -f demo-nginx
+    docker rm demo-hello
+
+
+3. EXTRACT THE PROJECT
 
 Extract the ZIP file to a simple folder, for example:
 
@@ -40,7 +65,7 @@ Example:
     cd C:\Projects\container-security
 
 
-3. CREATE THE PYTHON ENVIRONMENT
+4. CREATE THE PYTHON ENVIRONMENT
 
 Run these commands once:
 
@@ -53,7 +78,7 @@ If the environment already exists, only run:
     conda activate container-security
 
 
-4. CREATE THE ADMINISTRATOR ACCOUNT
+5. CREATE THE ADMINISTRATOR ACCOUNT
 
 Run:
 
@@ -64,7 +89,7 @@ Enter an administrator username and password when asked.
 Remember these details because they are required to log in to the dashboard.
 
 
-5. START THE APPLICATION
+6. START THE APPLICATION
 
 Run:
 
@@ -79,7 +104,7 @@ Open this address in a web browser:
 Log in using the administrator username and password created in Step 4.
 
 
-6. BASIC USAGE
+7. BASIC USAGE
 
 Dashboard:
     View Docker container totals, alerts, vulnerabilities, and charts.
@@ -99,14 +124,14 @@ Reports:
     Use Download CSV to save a report file.
 
 
-7. STOP THE APPLICATION
+8. STOP THE APPLICATION
 
 Return to the terminal running the application and press:
 
     Ctrl + C
 
 
-8. START IT AGAIN LATER
+9. START IT AGAIN LATER
 
 Open Anaconda Prompt or PowerShell in the project folder and run:
 
