@@ -21,7 +21,14 @@ class TrivyService:
     def version(self) -> str:
         """Return the installed Trivy version."""
 
-        result = subprocess.run([self.binary, "--version"], capture_output=True, text=True, timeout=30)
+        result = subprocess.run(
+            [self.binary, "--version"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=30,
+        )
         if result.returncode != 0:
             raise TrivyError(result.stderr.strip() or "Trivy is unavailable.")
         return result.stdout.strip()
@@ -38,6 +45,8 @@ class TrivyService:
                 [self.binary, "image", "--format", "json", "--scanners", "vuln", "--no-progress", image_name],
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 timeout=300,
             )
         except FileNotFoundError as error:
@@ -49,8 +58,12 @@ class TrivyService:
             error_output = (result.stderr or result.stdout).strip()
             raise TrivyError(error_output or "Trivy returned a non-zero exit code.")
 
+        stdout = result.stdout or ""
+        if not stdout.strip():
+            raise TrivyError("Trivy returned no JSON output.")
+
         try:
-            payload = json.loads(result.stdout.lstrip("\ufeff"))
+            payload = json.loads(stdout.lstrip("\ufeff"))
         except json.JSONDecodeError as error:
             raise TrivyError("Trivy returned invalid JSON output.") from error
 
