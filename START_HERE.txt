@@ -1,0 +1,129 @@
+CONTAINER SECURITY MONITORING FRAMEWORK
+Quick Start Guide
+
+Follow these steps on Windows.
+
+
+1. INSTALL THE REQUIRED SOFTWARE
+
+Install these applications if they are not already installed:
+
+- Docker Desktop
+- Anaconda or Miniconda
+- Trivy
+
+Start Docker Desktop and wait until it shows that Docker is running.
+
+To install Trivy with PowerShell, run:
+
+    winget install AquaSecurity.Trivy
+
+Close and reopen PowerShell after installing Trivy.
+
+
+2. EXTRACT THE PROJECT
+
+Extract the ZIP file to a simple folder, for example:
+
+    C:\Projects\container-security
+
+Open Anaconda Prompt or PowerShell and move into the project folder.
+
+Example:
+
+    cd C:\Projects\container-security
+
+
+3. CREATE THE PYTHON ENVIRONMENT
+
+Run these commands once:
+
+    conda create --name container-security python=3.12 -y
+    conda activate container-security
+    pip install -r requirements-dev.txt
+
+If the environment already exists, only run:
+
+    conda activate container-security
+
+
+4. CREATE THE ADMINISTRATOR ACCOUNT
+
+Run:
+
+    flask --app run.py create-admin
+
+Enter an administrator username and password when asked.
+
+Remember these details because they are required to log in to the dashboard.
+
+
+5. START THE APPLICATION
+
+Run:
+
+    python run.py
+
+Keep this terminal open while using the application.
+
+Open this address in a web browser:
+
+    http://127.0.0.1:5000
+
+Log in using the administrator username and password created in Step 4.
+
+
+6. BASIC USAGE
+
+Dashboard:
+    View Docker container totals, alerts, vulnerabilities, and charts.
+
+Containers:
+    View container details, resource usage, processes, logs, and security checks.
+
+Vulnerabilities:
+    Select a Docker image and click Scan image.
+    The scan checks application/library packages for known CVEs.
+
+Alerts:
+    Review security warnings and mark resolved alerts as resolved after fixing them.
+
+Reports:
+    Open Reports to view the security summary.
+    Use Download CSV to save a report file.
+
+
+7. STOP THE APPLICATION
+
+Return to the terminal running the application and press:
+
+    Ctrl + C
+
+
+8. START IT AGAIN LATER
+
+Open Anaconda Prompt or PowerShell in the project folder and run:
+
+    conda activate container-security
+    python run.py
+
+Then open:
+
+    http://127.0.0.1:5000
+
+
+TROUBLESHOOTING
+
+Docker error:
+    Start Docker Desktop and refresh the browser page.
+
+Trivy not found:
+    Install Trivy, close PowerShell, open it again, and retry.
+
+Python or Flask command not found:
+    Run:
+
+    conda activate container-security
+
+The application is already running:
+    Use a different terminal, or stop the existing application with Ctrl + C.
